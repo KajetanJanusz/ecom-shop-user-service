@@ -1,0 +1,27 @@
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI
+
+from api import user_router
+from broker.client import get_broker_client
+
+
+@asynccontextmanager
+async def lifespan(app):
+    broker_client = get_broker_client()
+    await broker_client.connect()
+    yield
+
+
+def create_app() -> FastAPI:
+    app_ = FastAPI(
+        title="Ecom Shop User Service",
+        description="User service for ecom shop",
+        version="1.0.0",
+        lifespan=lifespan,
+    )
+    app_.include_router(user_router)
+    return app_
+
+
+app = create_app()
