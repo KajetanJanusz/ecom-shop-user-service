@@ -11,6 +11,11 @@ class Broker(StrEnum):
 
 
 class Settings(BaseSettings):
+    model_config = {
+        "env_file": ".env",
+        "env_file_encoding": "utf-8",
+    }
+
     database_url: str = "sqlite+aiosqlite:///./memory"
     broker: Broker = Broker.KAFKA
     broker_url: str = "localhost:9092"
