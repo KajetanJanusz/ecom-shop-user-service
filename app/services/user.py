@@ -6,7 +6,6 @@ from ecom_shop_shared_lib.schemas.outbox import OutboxSchema
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from broker.client import get_broker_client
 from db.session import get_session
 from exceptions import InvalidCredentialsError
 from models.outbox import Outbox
@@ -59,9 +58,7 @@ class UserService:
         await self.outbox_repository.create(
             schema=OutboxSchema(
                 event_topic=UserServiceEvents.USER_LOGGED.topic,
-                payload=UserServiceEvents.USER_LOGGED.schema(
-                    id=user.id
-                ),
+                payload=UserServiceEvents.USER_LOGGED.schema(id=user.id),
                 status=EventStatus.UNPROCESSED,
             )
         )

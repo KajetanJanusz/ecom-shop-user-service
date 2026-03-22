@@ -85,7 +85,9 @@ class TestAuthService:
 
         # Assert
         settings = get_settings()
-        payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
+        payload = jwt.decode(
+            token, settings.secret_key, algorithms=[settings.algorithm]
+        )
         assert payload["user_id"] == str(user_id)
         assert payload["type"] == "access"
 
@@ -98,7 +100,9 @@ class TestAuthService:
 
         # Assert
         settings = get_settings()
-        payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
+        payload = jwt.decode(
+            token, settings.secret_key, algorithms=[settings.algorithm]
+        )
         assert payload["user_id"] == str(user_id)
         assert payload["type"] == "refresh"
 
@@ -113,9 +117,7 @@ class TestAuthService:
         # Assert
         assert result == str(user_id)
 
-    def test_expired_token_raises_invalid_token(
-        self, mock_auth_settings
-    ):
+    def test_expired_token_raises_invalid_token(self, mock_auth_settings):
         # Arrange
         user_id = uuid.uuid4()
         payload = {
@@ -130,9 +132,7 @@ class TestAuthService:
         with pytest.raises(InvalidTokenError):
             AuthService.verify_token(token=token, expected_token_type="access")
 
-    def test_verify_wrong_type_token_raises_invalid_token(
-        self, mock_auth_settings
-    ):
+    def test_verify_wrong_type_token_raises_invalid_token(self, mock_auth_settings):
         # Arrange
         user_id = uuid.uuid4()
         token = AuthService.create_refresh_token(user_id=user_id)
@@ -141,9 +141,7 @@ class TestAuthService:
         with pytest.raises(InvalidTokenError):
             AuthService.verify_token(token=token, expected_token_type="access")
 
-    def test_verify_invalid_token_raises_invalid_token(
-        self, mock_auth_settings
-    ):
+    def test_verify_invalid_token_raises_invalid_token(self, mock_auth_settings):
         # Arrange
         token = "invalid.token"
 
