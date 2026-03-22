@@ -58,7 +58,9 @@ async def refresh_access_token(
     token: TokenSchema,
     user_service: Annotated[UserService, Depends(get_user_service)],
 ) -> TokenSchema:
-    user_id = AuthService.verify_token(token=token.token, expected_token_type=TokenType.REFRESH)
+    user_id = AuthService.verify_token(
+        token=token.token, expected_token_type=TokenType.REFRESH
+    )
 
     await user_service.get_user_by_id(user_id=user_id)
     access_token = AuthService.create_access_token(user_id=user_id)

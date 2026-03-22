@@ -3,7 +3,6 @@ import uuid
 from enum import StrEnum
 
 import jwt
-from typing_extensions import Literal
 
 from exceptions import InvalidTokenError
 from settings import get_settings
@@ -44,9 +43,7 @@ class AuthService:
         )
 
     @staticmethod
-    def verify_token(
-        token: str, expected_token_type: TokenType
-    ) -> uuid.UUID:
+    def verify_token(token: str, expected_token_type: TokenType) -> uuid.UUID:
         try:
             decoded_data = jwt.decode(
                 jwt=token,

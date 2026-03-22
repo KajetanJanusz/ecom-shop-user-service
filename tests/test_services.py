@@ -39,7 +39,9 @@ class TestUserService:
         # Assert
         assert result == user
 
-    def test_authenticate_user_success(self, user_service, mock_user_repo, mock_outbox_repo):
+    def test_authenticate_user_success(
+        self, user_service, mock_user_repo, mock_outbox_repo
+    ):
         # Arrange
         user = UserFactory.build()
         mock_user_repo.get_one.return_value = user
@@ -112,7 +114,9 @@ class TestAuthService:
         token = AuthService.create_access_token(user_id=user_id)
 
         # Act
-        result = AuthService.verify_token(token=token, expected_token_type=TokenType.ACCESS)
+        result = AuthService.verify_token(
+            token=token, expected_token_type=TokenType.ACCESS
+        )
 
         # Assert
         assert result == str(user_id)
