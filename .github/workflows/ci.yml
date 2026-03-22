@@ -70,7 +70,7 @@ jobs:
       - name: Perform Bandit Analysis
         uses: PyCQA/bandit-action@v1
         with:
-          exclude: 'tests/*'
+          targets: 'api,app,core'
 
       - name: Cache Trivy DB
         uses: actions/cache@v4
