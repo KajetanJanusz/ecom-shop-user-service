@@ -18,7 +18,8 @@ dependencies = [
     "ecom-shop-shared-lib @ git+https://github.com/KajetanJanusz/ecom-shop-shared-lib.git@dev",
     "factory-boy (>=3.3.3,<4.0.0)",
     "pydantic-settings (>=2.13.1,<3.0.0)",
-    "httpx (>=0.28.1,<0.29.0)"
+    "httpx (>=0.28.1,<0.29.0)",
+    "uvicorn[standard] (>=0.42.0,<0.43.0)"
 ]
 
 [dependency-groups]
@@ -33,6 +34,9 @@ pythonpath = [".", "app", "core"]
 filterwarnings = [
     "ignore::DeprecationWarning:passlib",
 ]
+
+[tool.poetry.scripts]
+app = "core:app"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
