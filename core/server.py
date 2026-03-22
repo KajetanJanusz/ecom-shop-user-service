@@ -7,7 +7,7 @@ from broker.client import get_broker_client
 
 
 @asynccontextmanager
-async def lifespan(app):
+async def lifespan(_):
     broker_client = get_broker_client()
     await broker_client.connect()
     yield

@@ -13,7 +13,7 @@ from tests.models import UserFactory
 
 
 class TestUserService:
-    def test_create_user_success(self, user_service, mock_user_repo, mock_broker):
+    def test_create_user_success(self, user_service, mock_user_repo, mock_outbox_repo):
         # Arrange
         user = UserFactory.build()
         mock_user_repo.create.return_value = user
@@ -25,7 +25,7 @@ class TestUserService:
         # Assert
         assert result == user
         mock_user_repo.create.assert_called_once_with(schema=user_data)
-        mock_broker.produce.assert_called_once()
+        mock_outbox_repo.create.assert_called_once()
 
     def test_get_user_by_id_success(self, user_service, mock_user_repo):
         # Arrange
@@ -39,7 +39,7 @@ class TestUserService:
         # Assert
         assert result == user
 
-    def test_authenticate_user_success(self, user_service, mock_user_repo, mock_broker):
+    def test_authenticate_user_success(self, user_service, mock_user_repo, mock_outbox_repo):
         # Arrange
         user = UserFactory.build()
         mock_user_repo.get_one.return_value = user
@@ -50,7 +50,7 @@ class TestUserService:
 
         # Assert
         assert result == user
-        mock_broker.produce.assert_called_once()
+        mock_outbox_repo.create.assert_called_once()
 
     @pytest.mark.parametrize(
         ("repo_return", "is_active", "password"),

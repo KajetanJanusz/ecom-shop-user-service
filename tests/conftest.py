@@ -1,4 +1,4 @@
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from fastapi.testclient import TestClient
@@ -18,22 +18,23 @@ def mock_auth_settings():
 
 
 @pytest.fixture
-def mock_broker():
-    broker = AsyncMock()
-    with patch("services.user.get_broker_client", return_value=broker):
-        yield broker
-
-
-@pytest.fixture
 def mock_user_repo():
     return AsyncMock()
 
 
 @pytest.fixture
-def user_service(mock_user_repo, mock_broker):
+def mock_outbox_repo():
+    return AsyncMock()
+
+
+@pytest.fixture
+def user_service(mock_user_repo, mock_outbox_repo):
     service = object.__new__(UserService)
+    db_session = MagicMock()
+    db_session.begin.return_value = AsyncMock()
+    service.db_session = db_session
     service.user_repository = mock_user_repo
-    service.broker_client = mock_broker
+    service.outbox_repository = mock_outbox_repo
     return service
 
 

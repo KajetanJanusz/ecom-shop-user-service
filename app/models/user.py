@@ -2,7 +2,7 @@ from sqlalchemy import String, Boolean
 from sqlalchemy.orm import Mapped, mapped_column
 from passlib.context import CryptContext
 
-from db.base_model import BaseDbModelMixin
+from ecom_shop_shared_lib.models.base_mixin import BaseDbModelMixin
 from db.session import Base
 
 pwd_context = CryptContext(schemes=["bcrypt"])

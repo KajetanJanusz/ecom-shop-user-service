@@ -77,7 +77,7 @@ jobs:
           key: trivy-${{ runner.os }}
 
       - name: Run Trivy vulnerability scanner in fs mode
-        uses: aquasecurity/trivy-action@0.33.1
+        uses: aquasecurity/trivy-action@0.35.0
         with:
           scan-type: 'fs'
           scan-ref: '.'
@@ -89,7 +89,7 @@ jobs:
         run: docker build -t app:latest .
 
       - name: Run Trivy vulnerability scanner in image mode
-        uses: aquasecurity/trivy-action@0.33.1
+        uses: aquasecurity/trivy-action@0.35.0
         with:
           image-ref: 'app:latest'
           severity: 'HIGH,CRITICAL'

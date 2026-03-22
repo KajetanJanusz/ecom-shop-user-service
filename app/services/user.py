@@ -33,7 +33,7 @@ class UserService:
                     event_topic=UserServiceEvents.USER_CREATED.topic,
                     payload=UserServiceEvents.USER_CREATED.schema(
                         id=user.id, created_at=user.created_at
-                    ),
+                    ).model_dump(),
                     status=EventStatus.UNPROCESSED,
                 )
             )
@@ -58,7 +58,7 @@ class UserService:
         await self.outbox_repository.create(
             schema=OutboxSchema(
                 event_topic=UserServiceEvents.USER_LOGGED.topic,
-                payload=UserServiceEvents.USER_LOGGED.schema(id=user.id),
+                payload=UserServiceEvents.USER_LOGGED.schema(id=user.id).model_dump(),
                 status=EventStatus.UNPROCESSED,
             )
         )

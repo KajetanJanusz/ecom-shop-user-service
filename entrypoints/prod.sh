@@ -1,2 +1,2 @@
 #!/bin/bash
-gunicorn -c gunicorn.prod.conf.py core:app
+gunicorn -c ../gunicorn/gunicorn.prod.conf.py core.server:app
