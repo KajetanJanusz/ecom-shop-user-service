@@ -6,7 +6,8 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
-    POETRY_VIRTUALENVS_CREATE=false \
+    POETRY_VIRTUALENVS_CREATE=true \
+    POETRY_VIRTUALENVS_IN_PROJECT=true \
     POETRY_NO_INTERACTION=1 \
     POETRY_VERSION=${POETRY_VERSION}
 
@@ -21,25 +22,23 @@ COPY pyproject.toml poetry.lock ./
 
 RUN poetry install --no-interaction --no-root --only main
 
-COPY . .
-
-RUN poetry build
-
 
 FROM python:3.12.13-slim-bookworm AS prod-stage
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONFAULTHANDLER=1
+    PYTHONFAULTHANDLER=1 \
+    VENV_PATH="/app/.venv" \
+    PATH="/app/.venv/bin:$PATH"
 
 RUN groupadd -g 1001 appgroup && \
     useradd -m -u 1001 -g appgroup appuser
 
 WORKDIR /app
 
-COPY --from=build-stage /app/dist/*.whl .
+COPY --from=build-stage $VENV_PATH $VENV_PATH
 
-RUN pip install *.whl --no-index --find-links .
+COPY . .
 
 USER appuser
 

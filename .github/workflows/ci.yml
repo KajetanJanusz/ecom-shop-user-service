@@ -92,7 +92,7 @@ jobs:
           exit-code: 1
 
       - name: Build Docker image
-        run: docker build --target dev-stage -t app:latest .
+        run: docker build --target prod-stage -t app:latest .
 
       - name: Run Trivy vulnerability scanner in image mode
         uses: aquasecurity/trivy-action@0.35.0
