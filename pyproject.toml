@@ -2,7 +2,6 @@
 name = "user-service"
 version = "0.1.0"
 description = ""
-packages = [{include = "app"}]
 authors = [
     {name = "kajetanjanusz",email = "kajtek.k.janusz@gmail.com"}
 ]
@@ -35,6 +34,9 @@ pythonpath = [".", "app", "core"]
 filterwarnings = [
     "ignore::DeprecationWarning:passlib",
 ]
+
+[tool.poetry]
+packages = [{include = "app"}]
 
 [tool.poetry.scripts]
 app = "core:app"

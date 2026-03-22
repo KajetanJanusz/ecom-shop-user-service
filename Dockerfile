@@ -39,7 +39,7 @@ WORKDIR /app
 
 COPY --from=build-stage /app/dist/*.whl .
 
-RUN pip install *.whl
+RUN pip install *.whl --no-index --find-links .
 
 USER appuser
 

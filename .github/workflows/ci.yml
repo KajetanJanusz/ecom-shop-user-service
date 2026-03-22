@@ -5,6 +5,10 @@ on:
     branches:
       - dev
       - prod
+  push:
+    branches:
+      - dev
+      - prod
 
 jobs:
   lint:
