@@ -1,4 +1,4 @@
-FROM python:3.12.13-slim-bookworm AS base
+FROM python:3.14.3-slim-bookworm AS base
 
 ARG POETRY_VERSION=2.3.2
 
@@ -26,7 +26,7 @@ COPY . .
 RUN poetry build
 
 
-FROM python:3.12.13-slim-bookworm AS prod-stage
+FROM python:3.14.3-slim-bookworm AS prod-stage
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
