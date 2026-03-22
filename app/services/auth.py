@@ -1,5 +1,6 @@
 import datetime
 import uuid
+from enum import StrEnum
 
 import jwt
 from typing_extensions import Literal
@@ -10,6 +11,11 @@ from settings import get_settings
 settings = get_settings()
 
 
+class TokenType(StrEnum):
+    ACCESS = "access"
+    REFRESH = "refresh"
+
+
 class AuthService:
     @staticmethod
     def create_access_token(user_id: uuid.UUID) -> str:
@@ -18,7 +24,7 @@ class AuthService:
             payload={
                 "user_id": str(user_id),
                 "exp": now + datetime.timedelta(hours=1),
-                "type": "access",
+                "type": TokenType.ACCESS,
             },
             key=settings.secret_key,
             algorithm=settings.algorithm,
@@ -31,7 +37,7 @@ class AuthService:
             payload={
                 "user_id": str(user_id),
                 "exp": now + datetime.timedelta(days=30),
-                "type": "refresh",
+                "type": TokenType.REFRESH,
             },
             key=settings.secret_key,
             algorithm=settings.algorithm,
@@ -39,7 +45,7 @@ class AuthService:
 
     @staticmethod
     def verify_token(
-        token: str, expected_token_type: Literal["access", "refresh"] = "access"
+        token: str, expected_token_type: TokenType
     ) -> uuid.UUID:
         try:
             decoded_data = jwt.decode(

@@ -1,4 +1,4 @@
-FROM python:3.14.3-slim-bookworm as base
+FROM python:3.14.3-slim-bookworm AS base
 
 ARG POETRY_VERSION=2.3.2
 

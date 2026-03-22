@@ -7,7 +7,7 @@ import jwt
 import pytest
 
 from exceptions import InvalidCredentialsError, InvalidTokenError
-from services.auth import AuthService
+from services.auth import AuthService, TokenType
 from settings import get_settings
 from tests.models import UserFactory
 
@@ -112,7 +112,7 @@ class TestAuthService:
         token = AuthService.create_access_token(user_id=user_id)
 
         # Act
-        result = AuthService.verify_token(token=token, expected_token_type="access")
+        result = AuthService.verify_token(token=token, expected_token_type=TokenType.ACCESS)
 
         # Assert
         assert result == str(user_id)
@@ -123,14 +123,14 @@ class TestAuthService:
         payload = {
             "user_id": str(user_id),
             "exp": datetime.datetime.now() - datetime.timedelta(hours=1),
-            "type": "access",
+            "type": TokenType.ACCESS,
         }
         settings = get_settings()
         token = jwt.encode(payload, settings.secret_key, algorithm=settings.algorithm)
 
         # Act & Assert
         with pytest.raises(InvalidTokenError):
-            AuthService.verify_token(token=token, expected_token_type="access")
+            AuthService.verify_token(token=token, expected_token_type=TokenType.ACCESS)
 
     def test_verify_wrong_type_token_raises_invalid_token(self, mock_auth_settings):
         # Arrange
@@ -139,7 +139,7 @@ class TestAuthService:
 
         # Act & Assert
         with pytest.raises(InvalidTokenError):
-            AuthService.verify_token(token=token, expected_token_type="access")
+            AuthService.verify_token(token=token, expected_token_type=TokenType.ACCESS)
 
     def test_verify_invalid_token_raises_invalid_token(self, mock_auth_settings):
         # Arrange
@@ -147,4 +147,4 @@ class TestAuthService:
 
         # Act & Assert
         with pytest.raises(InvalidTokenError):
-            AuthService.verify_token(token=token, expected_token_type="access")
+            AuthService.verify_token(token=token, expected_token_type=TokenType.ACCESS)
